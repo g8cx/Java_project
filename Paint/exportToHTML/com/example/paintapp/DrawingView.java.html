@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>DrawingView.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DrawingView.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">paintapp</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">content</span><span class="s2">.</span><span class="s1">Context</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">graphics</span><span class="s2">.</span><span class="s1">Canvas</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">graphics</span><span class="s2">.</span><span class="s1">Paint</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">graphics</span><span class="s2">.</span><span class="s1">Path</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">AttributeSet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">view</span><span class="s2">.</span><span class="s1">MotionEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">view</span><span class="s2">.</span><span class="s1">View</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">DrawingView </span><span class="s0">extends </span><span class="s1">View </span><span class="s2">{</span>
+
+    <span class="s0">private static class </span><span class="s1">Stroke </span><span class="s2">{</span>
+        <span class="s1">Path path</span><span class="s2">;</span>
+        <span class="s1">Paint paint</span><span class="s2">;</span>
+        <span class="s1">Stroke</span><span class="s2">(</span><span class="s1">Path p</span><span class="s2">, </span><span class="s1">Paint paint</span><span class="s2">) {</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">path </span><span class="s2">= </span><span class="s1">p</span><span class="s2">;</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">paint </span><span class="s2">= </span><span class="s1">paint</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private final </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Stroke</span><span class="s2">&gt; </span><span class="s1">strokes </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+    <span class="s0">private </span><span class="s1">Path currentPath</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Paint currentPaint</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">DrawingView</span><span class="s2">(</span><span class="s1">Context context</span><span class="s2">, </span><span class="s1">AttributeSet attrs</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">(</span><span class="s1">context</span><span class="s2">, </span><span class="s1">attrs</span><span class="s2">);</span>
+        <span class="s1">init</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">init</span><span class="s2">() {</span>
+        <span class="s1">currentPaint </span><span class="s2">= </span><span class="s1">createPaint</span><span class="s2">(</span><span class="s3">0xFF000000</span><span class="s2">); </span><span class="s4">// чёрный по умолчанию</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">Paint createPaint</span><span class="s2">(</span><span class="s0">int </span><span class="s1">color</span><span class="s2">) {</span>
+        <span class="s1">Paint p </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Paint</span><span class="s2">();</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setColor</span><span class="s2">(</span><span class="s1">color</span><span class="s2">);</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setAntiAlias</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setStrokeWidth</span><span class="s2">(</span><span class="s3">8f</span><span class="s2">);</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s1">Paint</span><span class="s2">.</span><span class="s1">Style</span><span class="s2">.</span><span class="s1">STROKE</span><span class="s2">);</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setStrokeJoin</span><span class="s2">(</span><span class="s1">Paint</span><span class="s2">.</span><span class="s1">Join</span><span class="s2">.</span><span class="s1">ROUND</span><span class="s2">);</span>
+        <span class="s1">p</span><span class="s2">.</span><span class="s1">setStrokeCap</span><span class="s2">(</span><span class="s1">Paint</span><span class="s2">.</span><span class="s1">Cap</span><span class="s2">.</span><span class="s1">ROUND</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">p</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setPaintColor</span><span class="s2">(</span><span class="s0">int </span><span class="s1">color</span><span class="s2">) {</span>
+        <span class="s1">currentPaint </span><span class="s2">= </span><span class="s1">createPaint</span><span class="s2">(</span><span class="s1">color</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">clear</span><span class="s2">() {</span>
+        <span class="s1">strokes</span><span class="s2">.</span><span class="s1">clear</span><span class="s2">();</span>
+        <span class="s1">invalidate</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onDraw</span><span class="s2">(</span><span class="s1">Canvas canvas</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">onDraw</span><span class="s2">(</span><span class="s1">canvas</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Stroke s </span><span class="s2">: </span><span class="s1">strokes</span><span class="s2">) {</span>
+            <span class="s1">canvas</span><span class="s2">.</span><span class="s1">drawPath</span><span class="s2">(</span><span class="s1">s</span><span class="s2">.</span><span class="s1">path</span><span class="s2">, </span><span class="s1">s</span><span class="s2">.</span><span class="s1">paint</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">currentPath </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">canvas</span><span class="s2">.</span><span class="s1">drawPath</span><span class="s2">(</span><span class="s1">currentPath</span><span class="s2">, </span><span class="s1">currentPaint</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public boolean </span><span class="s1">onTouchEvent</span><span class="s2">(</span><span class="s1">MotionEvent event</span><span class="s2">) {</span>
+        <span class="s0">float </span><span class="s1">x </span><span class="s2">= </span><span class="s1">event</span><span class="s2">.</span><span class="s1">getX</span><span class="s2">();</span>
+        <span class="s0">float </span><span class="s1">y </span><span class="s2">= </span><span class="s1">event</span><span class="s2">.</span><span class="s1">getY</span><span class="s2">();</span>
+
+        <span class="s0">switch </span><span class="s2">(</span><span class="s1">event</span><span class="s2">.</span><span class="s1">getAction</span><span class="s2">()) {</span>
+            <span class="s0">case </span><span class="s1">MotionEvent</span><span class="s2">.</span><span class="s1">ACTION_DOWN</span><span class="s2">:</span>
+                <span class="s1">currentPath </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Path</span><span class="s2">();</span>
+                <span class="s1">currentPath</span><span class="s2">.</span><span class="s1">moveTo</span><span class="s2">(</span><span class="s1">x</span><span class="s2">, </span><span class="s1">y</span><span class="s2">);</span>
+                <span class="s1">strokes</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Stroke</span><span class="s2">(</span><span class="s1">currentPath</span><span class="s2">, </span><span class="s0">new </span><span class="s1">Paint</span><span class="s2">(</span><span class="s1">currentPaint</span><span class="s2">)));</span>
+                <span class="s1">invalidate</span><span class="s2">();</span>
+                <span class="s0">return true</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s1">MotionEvent</span><span class="s2">.</span><span class="s1">ACTION_MOVE</span><span class="s2">:</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">currentPath </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                    <span class="s1">currentPath</span><span class="s2">.</span><span class="s1">lineTo</span><span class="s2">(</span><span class="s1">x</span><span class="s2">, </span><span class="s1">y</span><span class="s2">);</span>
+                    <span class="s1">invalidate</span><span class="s2">();</span>
+                <span class="s2">}</span>
+                <span class="s0">return true</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s1">MotionEvent</span><span class="s2">.</span><span class="s1">ACTION_UP</span><span class="s2">:</span>
+                <span class="s1">currentPath </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+                <span class="s1">invalidate</span><span class="s2">();</span>
+                <span class="s0">return true</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">return super</span><span class="s2">.</span><span class="s1">onTouchEvent</span><span class="s2">(</span><span class="s1">event</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
