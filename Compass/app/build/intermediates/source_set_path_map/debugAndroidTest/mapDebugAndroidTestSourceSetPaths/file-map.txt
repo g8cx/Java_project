@@ -1,0 +1,7 @@
+com.example.compass.test.app-annotation-experimental-1.3.0-0 C:\Users\patro\.gradle\caches\8.13\transforms\0ebe68fd3fb5efed6e55d4bb8aab6959\transformed\annotation-experimental-1.3.0\res
+com.example.compass.test.app-core-1.5.0-1 C:\Users\patro\.gradle\caches\8.13\transforms\d1ff45d9a1dc7579af233be2c0034ed0\transformed\core-1.5.0\res
+com.example.compass.test.app-androidTest-2 C:\Users\patro\AndroidStudioProjects\Compass\app\build\generated\res\resValues\androidTest\debug
+com.example.compass.test.app-updated_navigation_xml-3 C:\Users\patro\AndroidStudioProjects\Compass\app\build\generated\updated_navigation_xml\debugAndroidTest
+com.example.compass.test.app-mergeDebugAndroidTestResources-4 C:\Users\patro\AndroidStudioProjects\Compass\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.compass.test.app-mergeDebugAndroidTestResources-5 C:\Users\patro\AndroidStudioProjects\Compass\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.compass.test.app-debugAndroidTest-6 C:\Users\patro\AndroidStudioProjects\Compass\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

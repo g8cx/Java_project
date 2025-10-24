@@ -1,0 +1,3 @@
+com.example.compass.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
